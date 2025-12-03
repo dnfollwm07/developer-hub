@@ -3,14 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, User, FolderKanban, BookOpen } from 'lucide-react';
+import { Home, FolderKanban, BookOpen } from 'lucide-react';
 
 export function Header() {
   const pathname = usePathname();
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
-    // { href: '/personal', label: 'About', icon: User },
     { href: '/projects', label: 'Projects', icon: FolderKanban },
     { href: '/notes', label: 'Notes', icon: BookOpen },
   ];

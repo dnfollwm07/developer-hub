@@ -7,7 +7,7 @@ export interface SidebarItem {
 export const sidebarItems: SidebarItem[] = [
   {
     title: 'About Me',
-    href: '/',
+    href: '/personal',
     children: [
       { title: 'Education', href: '/personal/education'},
       { title: 'Work Experience', href: '/personal/work_experience'},

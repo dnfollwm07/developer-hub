@@ -38,9 +38,9 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
         )}
         <Link
           href={item.href}
-          onClick={(e) => {
+          onClick={() => {
+            // 如果有子节点且 sidebar 未折叠，点击时展开/折叠，但不阻止导航
             if (hasChildren && !isCollapsed) {
-              e.preventDefault();
               toggleItem(item.title);
             }
           }}
