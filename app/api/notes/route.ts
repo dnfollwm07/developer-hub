@@ -18,7 +18,7 @@ export async function GET() {
       });
 
     return NextResponse.json(notes);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to read notes directory' }, { status: 500 });
   }
 } 

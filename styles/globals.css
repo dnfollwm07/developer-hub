@@ -35,12 +35,51 @@
   --font-weight-bold: 700;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-sans);
-  font-size: var(--font-size-base);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  * {
+    @apply border-slate-200 dark:border-slate-800;
+  }
+  
+  body {
+    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Grid background pattern */
+  .bg-grid-slate-100 {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249 / 0.5)'%3e%3cpath d='m0 .5h32m-32 32v-32'/%3e%3c/svg%3e");
+  }
+  
+  .bg-grid-slate-800\/25 {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(30 41 59 / 0.25)'%3e%3cpath d='m0 .5h32m-32 32v-32'/%3e%3c/svg%3e");
+  }
+  
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-100 dark:bg-slate-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400 dark:bg-slate-500;
+  }
 } 

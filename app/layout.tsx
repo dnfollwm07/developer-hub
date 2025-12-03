@@ -4,13 +4,13 @@ import '@/styles/globals.css';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SidebarProvider } from '@/components/layout/SidebarProvider';
-import { theme } from '@/styles/theme';
+import { ContentWrapper } from '@/components/layout/ContentWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'My Notes',
-  description: 'A personal note-taking application',
+  title: 'Jing-Ning Su - Developer Hub',
+  description: 'Personal website showcasing projects, technical notes, and professional journey',
 };
 
 export default function RootLayout({
@@ -19,47 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body style={styles.body}>
+    <html lang="en" className="scroll-smooth">
+      <body className={inter.className}>
         <SidebarProvider>
-          <div style={styles.container}>
+          <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900">
             <Header />
-            <div style={styles.mainContent}>
+            <div className="flex flex-1 pt-16">
               <Sidebar />
-              <div style={styles.content}>
-                {children}
-              </div>
+              <ContentWrapper>{children}</ContentWrapper>
             </div>
           </div>
         </SidebarProvider>
       </body>
     </html>
   );
-}
-
-const styles = {
-  body: {
-    fontFamily: inter.style.fontFamily,
-    margin: 0,
-    padding: 0,
-    backgroundColor: 'var(--background)',
-    color: 'var(--foreground)'
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh'
-  },
-  mainContent: {
-    marginTop: '4rem',
-    display: 'flex',
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: theme.colors.background.lightest
-  },
-  content: {
-    flex: 1,
-    overflow: 'auto',
-    padding: '1rem'
-  }
-} as const; 
+} 

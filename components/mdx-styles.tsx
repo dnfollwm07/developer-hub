@@ -4,9 +4,21 @@ import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  [key: string]: unknown;
+}
+
+interface ComponentProps {
+  children?: React.ReactNode;
+  [key: string]: unknown;
+}
+
 export const mdxComponents = {
   // 代码块样式
-  code: ({ node, inline, className, children, ...props }: any) => {
+  code: ({ inline, className, children, ...props }: CodeProps) => {
     const match = /language-(\w+)/.exec(className || '');
     return !inline && match ? (
       <SyntaxHighlighter
@@ -38,7 +50,7 @@ export const mdxComponents = {
     );
   },
   // 段落样式
-  p: (props: any) => (
+  p: (props: ComponentProps) => (
     <p
       style={{
         margin: '1rem 0',
@@ -49,7 +61,7 @@ export const mdxComponents = {
     />
   ),
   // 标题样式
-  h1: (props: any) => (
+  h1: (props: ComponentProps) => (
     <h1
       style={{
         fontSize: '2.5rem',
@@ -60,7 +72,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  h2: (props: any) => (
+  h2: (props: ComponentProps) => (
     <h2
       style={{
         fontSize: '2rem',
@@ -71,7 +83,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  h3: (props: any) => (
+  h3: (props: ComponentProps) => (
     <h3
       style={{
         fontSize: '1.5rem',
@@ -82,7 +94,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  h4: (props: any) => (
+  h4: (props: ComponentProps) => (
     <h4
       style={{
         fontSize: '1.25rem',
@@ -94,7 +106,7 @@ export const mdxComponents = {
     />
   ),
   // 列表样式
-  ul: (props: any) => (
+  ul: (props: ComponentProps) => (
     <ul
       style={{
         margin: '1rem 0',
@@ -104,7 +116,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  ol: (props: any) => (
+  ol: (props: ComponentProps) => (
     <ol
       style={{
         margin: '1rem 0',
@@ -114,7 +126,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  li: (props: any) => (
+  li: (props: ComponentProps) => (
     <li
       style={{
         margin: '0.5rem 0',
@@ -124,7 +136,7 @@ export const mdxComponents = {
     />
   ),
   // 引用样式
-  blockquote: (props: any) => (
+  blockquote: (props: ComponentProps) => (
     <blockquote
       style={{
         borderLeft: '4px solid var(--accent)',
@@ -137,7 +149,7 @@ export const mdxComponents = {
     />
   ),
   // 图片样式
-  img: (props: any) => (
+  img: (props: ComponentProps) => (
     <img
       style={{
         maxWidth: '100%',
@@ -150,7 +162,7 @@ export const mdxComponents = {
     />
   ),
   // 表格样式
-  table: (props: any) => (
+  table: (props: ComponentProps) => (
     <table
       style={{
         width: '100%',
@@ -162,7 +174,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  th: (props: any) => (
+  th: (props: ComponentProps) => (
     <th
       style={{
         border: '1px solid var(--border)',
@@ -174,7 +186,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  td: (props: any) => (
+  td: (props: ComponentProps) => (
     <td
       style={{
         border: '1px solid var(--border)',
@@ -184,7 +196,7 @@ export const mdxComponents = {
     />
   ),
   // 强调样式
-  em: (props: any) => (
+  em: (props: ComponentProps) => (
     <em
       style={{
         fontStyle: 'italic',
@@ -194,7 +206,7 @@ export const mdxComponents = {
     />
   ),
   // 加粗样式
-  strong: (props: any) => (
+  strong: (props: ComponentProps) => (
     <strong
       style={{
         fontWeight: 'bold',
@@ -204,7 +216,7 @@ export const mdxComponents = {
     />
   ),
   // 删除线样式
-  del: (props: any) => (
+  del: (props: ComponentProps) => (
     <del
       style={{
         textDecoration: 'line-through',
@@ -214,7 +226,7 @@ export const mdxComponents = {
     />
   ),
   // 高亮样式
-  mark: (props: any) => (
+  mark: (props: ComponentProps) => (
     <mark
       style={{
         backgroundColor: 'var(--accent)',
@@ -226,7 +238,7 @@ export const mdxComponents = {
     />
   ),
   // 行内代码样式
-  inlineCode: (props: any) => (
+  inlineCode: (props: ComponentProps) => (
     <code
       style={{
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -239,7 +251,7 @@ export const mdxComponents = {
     />
   ),
   // 链接样式
-  a: (props: any) => (
+  a: (props: ComponentProps) => (
     <a
       style={{
         color: 'var(--accent)',
@@ -250,7 +262,7 @@ export const mdxComponents = {
     />
   ),
   // 水平分割线样式
-  hr: (props: any) => (
+  hr: (props: ComponentProps) => (
     <hr
       style={{
         border: 'none',

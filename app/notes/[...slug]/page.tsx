@@ -17,7 +17,7 @@ export default async function Page({ params }: PageProps) {
   try {
     const source = await fs.readFile(filePath, 'utf8')
     return <MDXRenderer source={source} />
-  } catch (error) {
+  } catch {
     return <div>Page not found</div>
   }
 } 

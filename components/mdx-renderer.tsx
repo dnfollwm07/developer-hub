@@ -13,17 +13,14 @@ interface MDXRendererProps {
   source: string;
 }
 
-interface CodeProps {
-  node?: any;
+interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   inline?: boolean;
   className?: string;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
-interface ComponentProps {
+interface ComponentProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 const processHighlight = (text: string) => {
@@ -61,11 +58,12 @@ export default function MDXRenderer({ source }: MDXRendererProps) {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          code({ node, inline, className, children, ...props }: CodeProps) {
+          code({ inline, className, children, ...props }: CodeProps) {
             const match = /language-(\w+)/.exec(className || '');
             return !inline && match ? (
               <SyntaxHighlighter
-                style={vscDarkPlus}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                style={vscDarkPlus as any}
                 language={match[1]}
                 PreTag="div"
                 customStyle={{
@@ -75,7 +73,8 @@ export default function MDXRenderer({ source }: MDXRendererProps) {
                   fontSize: '0.9rem',
                   backgroundColor: 'var(--background-secondary)',
                 }}
-                {...props}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(props as any)}
               >
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
@@ -292,8 +291,8 @@ export default function MDXRenderer({ source }: MDXRendererProps) {
               {...props}
             />
           ),
-          a: (props: ComponentProps) => {
-            const href = props.href as string;
+          a: (props: ComponentProps & { href?: string }) => {
+            const href = props.href;
             if (href?.startsWith('#')) {
               // Extract the target ID from the href
               const targetId = href.slice(1);

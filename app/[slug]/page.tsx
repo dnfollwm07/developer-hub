@@ -1,7 +1,5 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { MDXRemote } from 'next-mdx-remote/rsc'
-import { useMDXComponents } from '@/components/mdx-components'
 import MDXPage from '@/components/mdx-page'
 
 interface PageProps {
@@ -17,7 +15,7 @@ export default async function Page({ params }: PageProps) {
   try {
     const source = await fs.readFile(filePath, 'utf8')
     return <MDXPage source={source} />
-  } catch (error) {
+  } catch {
     return <div>Page not found</div>
   }
 } 
