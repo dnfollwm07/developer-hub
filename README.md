@@ -29,7 +29,7 @@
 - **靈活性與結構性**：靈活的檔案組織，配合清晰的約定防止混亂
 - **效能與可維護性**：伺服器端渲染優化效能，簡單的邏輯易於除錯
 
-詳細的設計理念請參閱 [設計理念頁面](/projects/my-web/philosophy)。
+詳細的設計理念請參閱 [設計理念頁面](https://my-web-kappa-six.vercel.app/projects/my-web/philosophy)。
 
 ## 技術棧
 
