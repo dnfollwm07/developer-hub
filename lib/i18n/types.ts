@@ -13,6 +13,7 @@ export interface Translations {
   home: {
     welcome: string;
     hello: string;
+    name: string;
     callMe: string;
     description: string;
     aboutMeButton: string;

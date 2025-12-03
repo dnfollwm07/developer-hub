@@ -3,9 +3,12 @@
 import Link from 'next/link';
 import { ArrowRight, Code, BookOpen, Briefcase, Sparkles } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function Home() {
   const t = useTranslation();
+  const { language } = useLanguage();
+  const isChinese = language === 'zh-TW' || language === 'zh-CN';
   
   return (
       <div className="min-h-screen">
@@ -24,13 +27,15 @@ export default function Home() {
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
                 <span className="block">{t.home.hello}</span>
                 <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Jing-Ning Su
+                  {t.home.name}
                 </span>
               </h1>
               
-              <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-3xl mx-auto">
-                {t.home.callMe} <span className="font-semibold text-indigo-600 dark:text-indigo-400">Michelle</span>
-              </p>
+              {!isChinese && (
+                <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-3xl mx-auto">
+                  {t.home.callMe} <span className="font-semibold text-indigo-600 dark:text-indigo-400">Michelle</span>
+                </p>
+              )}
               
               <p className="text-lg text-slate-500 dark:text-slate-500 mb-12 max-w-2xl mx-auto">
                 {t.home.description}

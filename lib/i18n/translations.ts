@@ -11,8 +11,9 @@ export const translations: Record<Language, Translations> = {
     home: {
       welcome: '歡迎來到我的開發者中心',
       hello: '你好，我是',
+      name: '蘇敬甯',
       callMe: '你可以叫我',
-      description: '一位熱衷於分享程式碼、專案和技術見解的開發者。',
+      description: '一位熱愛學習與紀錄的開發者。',
       aboutMeButton: '關於我',
       viewNotesButton: '查看筆記',
       exploreWork: '探索我的作品',
@@ -56,8 +57,9 @@ export const translations: Record<Language, Translations> = {
     home: {
       welcome: '欢迎来到我的开发者中心',
       hello: '你好，我是',
+      name: '苏敬甯',
       callMe: '你可以叫我',
-      description: '一位热衷于分享代码、项目和技术见解的开发者。',
+      description: '一位热爱学习与纪录的开发者。',
       aboutMeButton: '关于我',
       viewNotesButton: '查看笔记',
       exploreWork: '探索我的作品',
@@ -101,8 +103,9 @@ export const translations: Record<Language, Translations> = {
     home: {
       welcome: 'Welcome to My Developer Hub',
       hello: 'Hello, I\'m',
+      name: 'Jing-Ning Su',
       callMe: 'You can call me',
-      description: 'A passionate developer sharing my journey through code, projects, and technical insights.',
+      description: 'A passionate developer who loves learning and recording.',
       aboutMeButton: 'About Me',
       viewNotesButton: 'View Notes',
       exploreWork: 'Explore My Work',

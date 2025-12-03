@@ -1,7 +1,6 @@
-import { promises as fs } from 'fs'
-import path from 'path'
 import MDXPage from '@/components/mdx-page'
-import { getServerTranslations } from '@/lib/i18n/server'
+import { getServerTranslations, getServerLanguage } from '@/lib/i18n/server'
+import { loadContent, buildContentPath } from '@/lib/content-loader'
 
 interface PageProps {
   params: {
@@ -11,13 +10,16 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = params
+  const language = getServerLanguage();
   const t = getServerTranslations();
-  const filePath = path.join(process.cwd(), 'content', `${slug}.mdx`)
+  const basePath = buildContentPath('content', slug);
   
-  try {
-    const source = await fs.readFile(filePath, 'utf8')
-    return <MDXPage source={source} />
-  } catch {
-    return <div>{t.common.notFound}</div>
+  // 尝试加载多语言内容
+  const result = await loadContent(basePath, language);
+  
+  if (result) {
+    return <MDXPage source={result.content} />
   }
+  
+  return <div>{t.common.notFound}</div>
 } 

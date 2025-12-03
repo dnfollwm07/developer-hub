@@ -1,9 +1,8 @@
-import { promises as fs } from 'fs'
-import path from 'path'
 import MDXRenderer from '@/components/mdx-renderer'
 import IndexPage from '@/components/IndexPage'
 import { getChildrenByPath, getTitleByPath } from '@/lib/sidebar-utils'
-import { getServerTranslations } from '@/lib/i18n/server'
+import { getServerTranslations, getServerLanguage } from '@/lib/i18n/server'
+import { loadContent, buildContentPath } from '@/lib/content-loader'
 
 interface PageProps {
   params: {
@@ -13,23 +12,25 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = params
+  const language = getServerLanguage();
   const t = getServerTranslations();
-  // 構建文件路徑，將 URL slug 轉換為對應的 MDX 文件路徑
-  const filePath = path.join(process.cwd(), 'content', 'projects', ...slug) + '.mdx'
   const urlPath = '/projects/' + slug.join('/')
+  const basePath = buildContentPath('content', 'projects', ...slug);
   
-  try {
-    const source = await fs.readFile(filePath, 'utf8')
-    return <MDXRenderer source={source} />
-  } catch {
-    // 如果文件不存在，检查是否有子节点
-    const children = getChildrenByPath(urlPath)
-    const title = getTitleByPath(urlPath)
-    
-    if (children.length > 0) {
-      return <IndexPage title={title} items={children} />
-    }
-    
-    return <div>{t.common.notFound}</div>
+  // 尝试加载多语言内容
+  const result = await loadContent(basePath, language);
+  
+  if (result) {
+    return <MDXRenderer source={result.content} />
   }
+  
+  // 如果文件不存在，检查是否有子节点
+  const children = getChildrenByPath(urlPath)
+  const title = getTitleByPath(urlPath, language)
+  
+  if (children.length > 0) {
+    return <IndexPage title={title} items={children} />
+  }
+  
+  return <div>{t.common.notFound}</div>
 } 
