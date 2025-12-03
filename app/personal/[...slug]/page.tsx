@@ -32,5 +32,16 @@ export default async function Page({ params }: PageProps) {
     return <IndexPage title={title} items={children} />
   }
   
+  // 调试信息：在开发环境中显示路径信息
+  if (process.env.NODE_ENV === 'development') {
+    console.debug('Content not found:', {
+      urlPath,
+      basePath,
+      slug,
+      language,
+      cwd: process.cwd(),
+    });
+  }
+  
   return <div>{t.common.notFound}</div>
 } 
