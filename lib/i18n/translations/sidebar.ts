@@ -61,6 +61,11 @@ export const sidebar = {
     [LANGUAGE.ZH_CN]: '我的网站',
     [LANGUAGE.EN]: 'My Web',
   } as MultilangText,
+  philosophy: {
+    [LANGUAGE.ZH_TW]: '設計理念',
+    [LANGUAGE.ZH_CN]: '设计理念',
+    [LANGUAGE.EN]: 'Design Philosophy',
+  } as MultilangText,
   tailwindCSS: {
     [LANGUAGE.ZH_TW]: 'Tailwind CSS',
     [LANGUAGE.ZH_CN]: 'Tailwind CSS',

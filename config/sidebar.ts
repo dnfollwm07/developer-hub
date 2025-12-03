@@ -45,12 +45,16 @@ export const sidebarConfigs: SidebarItem[] = [
         href: '/projects/my-web',
         children: [
           {
-            titleKey: 'tailwindCSS',
-            href: '/projects/my-web/tailwindcss'
+            titleKey: 'philosophy',
+            href: '/projects/my-web/philosophy'
           },
           {
             titleKey: 'nextjs',
             href: '/projects/my-web/nextjs'
+          },
+          {
+            titleKey: 'tailwindCSS',
+            href: '/projects/my-web/tailwindcss'
           }
         ],
       },
