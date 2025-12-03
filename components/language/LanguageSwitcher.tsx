@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { languageNames } from '@/lib/i18n/translations';
+import { LANGUAGE, languageNames } from '@/lib/i18n/constants';
 import type { Language } from '@/lib/i18n/types';
 import { cn } from '@/lib/utils';
 
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const languages: Language[] = ['zh-TW', 'zh-CN', 'en'];
+  const languages: Language[] = [LANGUAGE.ZH_TW, LANGUAGE.ZH_CN, LANGUAGE.EN];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -34,6 +36,8 @@ export function LanguageSwitcher() {
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
     setIsOpen(false);
+    // 刷新当前页面以重新加载服务器端内容
+    router.refresh();
   };
 
   return (

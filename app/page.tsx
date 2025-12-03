@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { ArrowRight, Code, BookOpen, Briefcase, Sparkles } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import { LANGUAGE } from '@/lib/i18n/constants';
 
 export default function Home() {
   const t = useTranslation();
   const { language } = useLanguage();
-  const isChinese = language === 'zh-TW' || language === 'zh-CN';
+  const isChinese = language === LANGUAGE.ZH_TW || language === LANGUAGE.ZH_CN;
   
   return (
       <div className="min-h-screen">
@@ -24,9 +25,9 @@ export default function Home() {
                 </span>
               </div>
               
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
                 <span className="block">{t.home.hello}</span>
-                <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
                   {t.home.name}
                 </span>
               </h1>

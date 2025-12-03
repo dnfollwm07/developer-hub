@@ -1,36 +1,55 @@
-export interface SidebarItem {
-  title: string;
-  href: string;
-  children?: SidebarItem[];
-}
+import type { SidebarItem } from './sidebar-types';
 
-export const sidebarItems: SidebarItem[] = [
+// Sidebar 配置使用翻译键
+// 实际的标题会通过 getTranslatedSidebarItems 函数根据当前语言动态获取
+export const sidebarConfig: SidebarItem = {
+  titleKey: 'aboutMe',
+  href: '/personal',
+  children: [
+    { titleKey: 'summary', href: '/personal/summary'},
+    { titleKey: 'technicalSkills', href: '/personal/technical_skills'},
+    { titleKey: 'education', href: '/personal/education'},
+    { titleKey: 'workExperience', href: '/personal/work_experience'},
+  ],
+};
+
+export const sidebarConfigs: SidebarItem[] = [
   {
-    title: 'About Me',
+    titleKey: 'aboutMe',
     href: '/personal',
     children: [
-      { title: 'Education', href: '/personal/education'},
-      { title: 'Work Experience', href: '/personal/work_experience'},
+      { titleKey: 'summary', href: '/personal/summary'},
+      { titleKey: 'technicalSkills', href: '/personal/technical_skills'},
+      { titleKey: 'education', href: '/personal/education'},
+      { titleKey: 'workExperience', href: '/personal/work_experience'},
     ],
   },
   {
-    title: 'My Projects',
+    titleKey: 'myProjects',
     href: '/projects',
     children: [
       {
-        title: 'Meituan',
-        href: '/projects/meituan'
+        titleKey: 'flightBookingPlatform',
+        href: '/projects/flight-booking-platform'
       },
       {
-        title: 'My Web',
+        titleKey: 'oncallAutomation',
+        href: '/projects/oncall-automation'
+      },
+      {
+        titleKey: 'snippai',
+        href: '/projects/snippai'
+      },
+      {
+        titleKey: 'myWeb',
         href: '/projects/my-web',
         children: [
           {
-            title: 'Tailwind CSS',
+            titleKey: 'tailwindCSS',
             href: '/projects/my-web/tailwindcss'
           },
           {
-            title: 'Nextjs',
+            titleKey: 'nextjs',
             href: '/projects/my-web/nextjs'
           }
         ],
@@ -38,189 +57,189 @@ export const sidebarItems: SidebarItem[] = [
     ]
   },
   {
-    title: 'My Notes',
+    titleKey: 'myNotes',
     href: '/notes',
     children: [
       { 
-        title: 'Operating System', 
+        titleKey: 'operatingSystem', 
         href: '/notes/operating_system',
         children: [
           { 
-            title: '作業系統', 
+            titleKey: 'processThread', 
             href: '/notes/operating_system/process_thread' 
           }
         ]
       },
       { 
-        title: 'Network', 
+        titleKey: 'network', 
         href: '/notes/network/index',
         children: [
           { 
-            title: '網絡模型', 
+            titleKey: 'networkModel', 
             href: '/notes/network/model' 
           },
           { 
-            title: '網卡、路由器、交換機', 
+            titleKey: 'routerSwitch', 
             href: '/notes/network/router_switch' 
           },
           { 
-            title: '瀏覽器解析Url', 
+            titleKey: 'browserParseUrl', 
             href: '/notes/network/webParseUrl' 
           },
           { 
-            title: 'HTTP', 
+            titleKey: 'http', 
             href: '/notes/network/http' 
           },
           { 
-            title: 'TCP', 
+            titleKey: 'tcp', 
             href: '/notes/network/tcp' 
           },
           { 
-            title: 'IP', 
+            titleKey: 'ip', 
             href: '/notes/network/ip' 
           },
           { 
-            title: 'MAC', 
+            titleKey: 'mac', 
             href: '/notes/network/mac' 
           },
         ]
       },
       { 
-        title: 'Data Structure', 
+        titleKey: 'dataStructure', 
         href: '/notes/data_structure',
         children: [
           { 
-            title: '樹', 
+            titleKey: 'tree', 
             href: '/notes/data_structure/tree' 
           },
         ]
       },
       { 
-        title: 'Frontend', 
+        titleKey: 'frontend', 
         href: '/notes/frontend/index',
         children: [
           { 
-            title: 'React', 
+            titleKey: 'react', 
             href: '/notes/frontend/react/index',
             children: [
               { 
-                title: 'React Hooks', 
+                titleKey: 'reactHooks', 
                 href: '/notes/frontend/react/hooks' 
               },
               {
-                title: 'useMemo, useState',
+                titleKey: 'useMemoUseState',
                 href: '/notes/frontend/react/useMemo_useState'
               },
               {
-                title: 'useEffect',
+                titleKey: 'useEffect',
                 href: '/notes/frontend/react/useEffect'
               },
               {
-                title: 'react.FC',
+                titleKey: 'reactFC',
                 href: '/notes/frontend/react/react_fc'
               },
               {
-                title: '模塊範例',
+                titleKey: 'componentExamples',
                 href: '/notes/frontend/react/component_examples'
               },
               {
-                title: '組件通信',
+                titleKey: 'componentCommunication',
                 href: '/notes/frontend/react/component_communication'
               }
             ]
           },
           {
-            title: 'Electron',
+            titleKey: 'electron',
             href: '/notes/frontend/electron/index',
             children: [
               {
-                title: 'Main 與 Renderer Process',
+                titleKey: 'mainRenderer',
                 href: '/notes/frontend/electron/main_renderer'
               },
               {
-                title: 'IPC 通訊',
+                titleKey: 'ipc',
                 href: '/notes/frontend/electron/ipc'
               },
               {
-                title: '原生 API（Native APIs）',
+                titleKey: 'nativeAPIs',
                 href: '/notes/frontend/electron/native_apis'
               },
               {
-                title: '應用打包與發佈',
+                titleKey: 'packagingPublishing',
                 href: '/notes/frontend/electron/packaging_publishing'
               }
             ]
           },
           {
-            title: 'CSS',
+            titleKey: 'css',
             href: '/notes/frontend/css/index',
             children: [
               {
-                title: 'Selectors',
+                titleKey: 'selectors',
                 href: '/notes/frontend/css/selectors'
               },
               {
-                title: 'Box Models',
+                titleKey: 'boxModels',
                 href: '/notes/frontend/css/box_model'
               },
               {
-                title: 'Layout',
+                titleKey: 'layout',
                 href: '/notes/frontend/css/layout'
               },
               {
-                title: 'Styling',
+                titleKey: 'styling',
                 href: '/notes/frontend/css/styling-techniques'
               },
               {
-                title: '響應式佈局',
+                titleKey: 'responsiveDesign',
                 href: '/notes/frontend/css/responsive-design'
               },
               {
-                title: '優化與預處理器',
+                titleKey: 'optimizationPreprocessors',
                 href: '/notes/frontend/css/optimization-preprocessors'
               },
               {
-                title: 'Tailwind CSS',
+                titleKey: 'tailwindCSS',
                 href: '/notes/frontend/css/tailwindcss'
               },
             ]
           },
           {
-            title: 'HTML',
+            titleKey: 'html',
             href: '/notes/frontend/html',
             children: [
               {
-                title: '基礎',
+                titleKey: 'basics',
                 href: '/notes/frontend/html/basic'
               },
               {
-                title: '存儲',
+                titleKey: 'storage',
                 href: '/notes/frontend/html/storage'
               },
               {
-                title: '腳本與性能',
+                titleKey: 'scripting',
                 href: '/notes/frontend/html/scripting'
               },
               {
-                title: '構建塊與功能',
+                titleKey: 'buildingBlocks',
                 href: '/notes/frontend/html/building_blocks'
               },
               {
-                title: '媒體與元素',
+                titleKey: 'media',
                 href: '/notes/frontend/html/media'
               }
             ]
           },
           {
-            title: 'Nextjs',
+            titleKey: 'nextjs',
             href: '/notes/frontend/nextjs/index'
           },
           {
-            title: 'Request',
+            titleKey: 'request',
             href: '/notes/frontend/request',
             children: [
               {
-                title: 'RestAPI',
+                titleKey: 'restAPI',
                 href: '/notes/frontend/request/restAPI'
               }
             ]
@@ -228,25 +247,21 @@ export const sidebarItems: SidebarItem[] = [
         ]
       },
       { 
-        title: 'Android', 
+        titleKey: 'android', 
         href: '/notes/android/index'
       },
       { 
-        title: 'Backend', 
+        titleKey: 'backend', 
         href: '/notes/backend/index'
       },
       { 
-        title: 'Other Techniques', 
+        titleKey: 'otherTechniques', 
         href: '/notes/other_techniques/index'
       },
       { 
-        title: 'Tools', 
+        titleKey: 'tools', 
         href: '/notes/tools/index'
       },
     ],
   },
-  // {
-  //   title: '預覽編輯器',
-  //   href: '/editor'
-  // },
-]; 
+];

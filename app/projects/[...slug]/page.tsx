@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
   }
   
   // 如果文件不存在，检查是否有子节点
-  const children = getChildrenByPath(urlPath)
+  const children = getChildrenByPath(urlPath, language)
   const title = getTitleByPath(urlPath, language)
   
   if (children.length > 0) {

@@ -5,42 +5,43 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
-import type { SidebarItem } from '@/config/sidebar';
-import { sidebarItems } from '@/config/sidebar';
+import type { TranslatedSidebarItem } from '@/config/sidebar-types';
+import { getTranslatedSidebarItems } from '@/lib/sidebar-utils';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { getTranslatedSidebarTitle } from '@/lib/i18n/sidebar-translations';
+import { useMemo } from 'react';
 
 interface SidebarItemProps {
-  item: SidebarItem;
+  item: TranslatedSidebarItem;
   level?: number;
 }
 
 const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) => {
   const { isCollapsed, expandedItems, toggleItem } = useSidebar();
   const pathname = usePathname();
-  const { language } = useLanguage();
   const hasChildren = item.children && item.children.length > 0;
-  const isExpanded = expandedItems.includes(item.title);
+  const isExpanded = expandedItems.includes(item.href);
   const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
-  const translatedTitle = getTranslatedSidebarTitle(item.title, language);
 
   return (
     <div className="mb-1">
       <div className="flex items-center group">
-        {hasChildren && !isCollapsed && (
-          <button
-            onClick={() => toggleItem(item.title)}
-            className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            {isExpanded ? (
-              <ChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-            ) : (
-              <ChevronRight className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-            )}
-          </button>
-        )}
+        {/* 固定宽度的箭头按钮容器，确保对齐 */}
+        <div className="w-6 flex-shrink-0 flex items-center justify-start">
+          {hasChildren && !isCollapsed && (
+            <button
+              onClick={() => toggleItem(item.href)}
+              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              {isExpanded ? (
+                <ChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+              )}
+            </button>
+          )}
+        </div>
         <Link
           href={item.href}
           onClick={() => {
@@ -50,8 +51,8 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
             }
           }}
           className={`
-            flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
-            ${isCollapsed ? 'px-2' : ''}
+            flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-200
+            ${isCollapsed ? 'px-2' : 'pl-1 pr-3'}
             ${level > 0 ? 'ml-4 text-xs' : ''}
             ${
               isActive
@@ -59,9 +60,9 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }
           `}
-          title={isCollapsed ? translatedTitle : undefined}
+          title={isCollapsed ? item.title : undefined}
         >
-          {!isCollapsed && translatedTitle}
+          {!isCollapsed && item.title}
           {isCollapsed && <span className="text-xs">•</span>}
         </Link>
       </div>
@@ -80,6 +81,12 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
 export function Sidebar() {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const t = useTranslation();
+  const { language } = useLanguage();
+  
+  // 获取翻译后的 sidebar 配置
+  const sidebarItems = useMemo(() => {
+    return getTranslatedSidebarItems(language);
+  }, [language]);
 
   return (
     <aside

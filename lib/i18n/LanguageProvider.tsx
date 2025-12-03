@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { Language } from './types';
-import { defaultLanguage } from './translations';
+import { LANGUAGE, defaultLanguage } from './constants';
 
 interface LanguageContextType {
   language: Language;
@@ -19,17 +19,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && (savedLanguage === 'zh-TW' || savedLanguage === 'zh-CN' || savedLanguage === 'en')) {
-      setLanguageState(savedLanguage);
+    const savedLang = savedLanguage as Language;
+    if (savedLanguage && Object.values(LANGUAGE).includes(savedLang)) {
+      setLanguageState(savedLang);
     } else {
       // Detect browser language
       const browserLang = navigator.language;
       if (browserLang.startsWith('zh')) {
         // Check if Traditional or Simplified
         const isTraditional = browserLang.includes('TW') || browserLang.includes('HK');
-        setLanguageState(isTraditional ? 'zh-TW' : 'zh-CN');
+        setLanguageState(isTraditional ? LANGUAGE.ZH_TW : LANGUAGE.ZH_CN);
       } else {
-        setLanguageState('en');
+        setLanguageState(LANGUAGE.EN);
       }
     }
   }, []);

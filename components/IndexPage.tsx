@@ -2,25 +2,21 @@
 
 import Link from 'next/link';
 import { ChevronRight, FileText, Folder } from 'lucide-react';
-import type { SidebarItem } from '@/config/sidebar';
+import type { TranslatedSidebarItem } from '@/config/sidebar-types';
 import { useTranslation } from '@/lib/i18n/useTranslation';
-import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { getTranslatedSidebarTitle } from '@/lib/i18n/sidebar-translations';
 
 interface IndexPageProps {
   title: string;
-  items: SidebarItem[];
+  items: TranslatedSidebarItem[];
 }
 
 export default function IndexPage({ title, items }: IndexPageProps) {
   const t = useTranslation();
-  const { language } = useLanguage();
   
-  const renderItems = (items: SidebarItem[], level = 0) => {
+  const renderItems = (items: TranslatedSidebarItem[], level = 0) => {
     return items.map((item) => {
       const hasChildren = item.children && item.children.length > 0;
       const isLeaf = !hasChildren;
-      const translatedTitle = getTranslatedSidebarTitle(item.title, language);
 
       return (
         <div key={item.href} className={level > 0 ? 'ml-6 mt-2' : ''}>
@@ -55,7 +51,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                {translatedTitle}
+                {item.title}
               </h3>
               {hasChildren && (
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -77,7 +73,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
                 >
                   <span className="flex items-center gap-2">
                     <FileText className="w-4 h-4" />
-                    {getTranslatedSidebarTitle(child.title, language)}
+                    {child.title}
                   </span>
                 </Link>
               ))}

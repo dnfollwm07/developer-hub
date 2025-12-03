@@ -17,7 +17,7 @@ export default async function ProjectsPage() {
   }
   
   // 如果文件不存在，显示子节点列表
-  const children = getChildrenByPath('/projects')
+  const children = getChildrenByPath('/projects', language)
   const title = getTitleByPath('/projects', language)
   
   if (children.length > 0) {

@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
-import { translations, defaultLanguage } from './translations';
+import { getTranslations } from './translations/index';
+import { LANGUAGE, defaultLanguage } from './constants';
 import type { Language, Translations } from './types';
 
 export function getServerLanguage(): Language {
@@ -7,8 +8,12 @@ export function getServerLanguage(): Language {
   const cookieStore = cookies();
   const langCookie = cookieStore.get('language');
   
-  if (langCookie?.value && (langCookie.value === 'zh-TW' || langCookie.value === 'zh-CN' || langCookie.value === 'en')) {
-    return langCookie.value as Language;
+  if (langCookie?.value) {
+    const langValue = langCookie.value as Language;
+    // 验证是否是有效的语言枚举值
+    if (Object.values(LANGUAGE).includes(langValue)) {
+      return langValue;
+    }
   }
   
   return defaultLanguage;
@@ -16,6 +21,6 @@ export function getServerLanguage(): Language {
 
 export function getServerTranslations(): Translations {
   const language = getServerLanguage();
-  return translations[language];
+  return getTranslations(language);
 }
 

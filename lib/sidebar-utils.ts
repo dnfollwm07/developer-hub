@@ -1,15 +1,48 @@
-import type { SidebarItem } from '@/config/sidebar';
-import { sidebarItems } from '@/config/sidebar';
+import type { SidebarItem, TranslatedSidebarItem } from '@/config/sidebar-types';
+import { sidebarConfigs } from '@/config/sidebar';
 import type { Language } from './i18n/types';
-import { getTranslatedSidebarTitle } from './i18n/sidebar-translations';
+import { sidebar } from './i18n/translations/sidebar';
+import { LANGUAGE } from './i18n/constants';
+import type { MultilangText } from './i18n/types';
+
+/**
+ * 从多语言对象中获取指定语言的文本
+ */
+function getText(multilangText: MultilangText, language: Language): string {
+  return multilangText[language];
+}
+
+/**
+ * 将配置项转换为翻译后的项
+ */
+function translateSidebarItem(
+  item: SidebarItem,
+  language: Language
+): TranslatedSidebarItem {
+  const sidebarText = (sidebar as Record<string, MultilangText>)[item.titleKey];
+  const title = sidebarText ? getText(sidebarText, language) : item.titleKey;
+  
+  return {
+    title,
+    href: item.href,
+    children: item.children?.map(child => translateSidebarItem(child, language)),
+  };
+}
+
+/**
+ * 获取翻译后的 sidebar 配置
+ */
+export function getTranslatedSidebarItems(language: Language): TranslatedSidebarItem[] {
+  return sidebarConfigs.map(item => translateSidebarItem(item, language));
+}
 
 /**
  * 递归查找 sidebar 中匹配指定路径的项
  */
 export function findSidebarItemByPath(
-  items: SidebarItem[],
+  items: TranslatedSidebarItem[],
   path: string
-): SidebarItem | null {
+): TranslatedSidebarItem | null {
   // 规范化路径
   let normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
   if (normalizedPath === '') normalizedPath = '/';
@@ -41,12 +74,16 @@ export function findSidebarItemByPath(
 /**
  * 根据路径获取子节点列表
  */
-export function getChildrenByPath(path: string): SidebarItem[] {
+export function getChildrenByPath(path: string, language?: Language): TranslatedSidebarItem[] {
   // 规范化路径
   const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
   
+  // 如果没有提供语言，使用默认语言
+  const lang: Language = language || LANGUAGE.EN;
+  const items = getTranslatedSidebarItems(lang);
+  
   // 查找匹配的项
-  const item = findSidebarItemByPath(sidebarItems, normalizedPath);
+  const item = findSidebarItemByPath(items, normalizedPath);
   
   if (item && item.children) {
     return item.children;
@@ -60,13 +97,8 @@ export function getChildrenByPath(path: string): SidebarItem[] {
  */
 export function getTitleByPath(path: string, language?: Language): string {
   const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
-  const item = findSidebarItemByPath(sidebarItems, normalizedPath);
-  if (!item) return 'Content';
-  
-  if (language) {
-    return getTranslatedSidebarTitle(item.title, language);
-  }
-  
-  return item.title;
+  const lang: Language = language || LANGUAGE.EN;
+  const items = getTranslatedSidebarItems(lang);
+  const item = findSidebarItemByPath(items, normalizedPath);
+  return item?.title || 'Content';
 }
-

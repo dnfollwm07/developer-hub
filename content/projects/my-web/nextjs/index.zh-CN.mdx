@@ -1,0 +1,314 @@
+## Next.js 14 开发者中心
+
+**项目类型：** 个人作品集与开发者中心  
+**技术栈：** Next.js 14, TypeScript, React 18, App Router  
+**部署平台：** Vercel  
+**状态：** 生产环境
+
+---
+
+### 项目概述
+
+使用 **Next.js 14 App Router** 构建的现代化全栈个人开发者中心，具备动态内容管理、多语言支持和性能优化。平台同时作为作品集展示和技术知识库，展现进阶 Next.js 模式与最佳实践。
+
+---
+
+### 架构与技术决策
+
+#### **Next.js 14 App Router**
+
+项目采用 Next.js 14 的 **App Router** 架构，提供：
+
+- **默认服务器组件**：大多数组件为服务器端渲染，减少客户端 JavaScript 打包大小
+- **文件系统路由**：从目录结构自动生成路由
+- **嵌套布局**：使用 `app/layout.tsx` 的共享布局和路由特定布局
+- **流式与 Suspense**：渐进式页面渲染以提升感知性能
+
+**目录结构：**
+```
+app/
+  layout.tsx              # 根布局与提供者
+  page.tsx                # 首页（服务器组件）
+  [slug]/                 # 动态顶层路由
+  notes/[...slug]/        # 嵌套内容的捕获所有路由
+  personal/[...slug]/     # 个人区块的嵌套路由
+  projects/[...slug]/     # 项目区块的嵌套路由
+  api/                    # 动态内容的 API 路由
+```
+
+#### **服务器 vs 客户端组件**
+
+**服务器组件**（默认）：
+- 在组件中直接使用 `async/await` 获取数据
+- 访问 Node.js API（`fs`、`path`）
+- 静态内容零客户端 JavaScript
+- 示例：`app/personal/[...slug]/page.tsx`
+
+```typescript
+export default async function Page({ params }: PageProps) {
+  const language = getServerLanguage();
+  const basePath = buildContentPath('content', 'personal', ...slug);
+  const result = await loadContent(basePath, language);
+  
+  if (result) {
+    return <MDXRenderer source={result.content} />
+  }
+  // 回退逻辑...
+}
+```
+
+**客户端组件**（明确标记 `'use client'`）：
+- 使用 React hooks 的交互式 UI
+- 浏览器 API 和事件处理器
+- 状态管理和上下文
+- 示例：`components/language/LanguageSwitcher.tsx`
+
+```typescript
+'use client';
+
+export function LanguageSwitcher() {
+  const { language, setLanguage } = useLanguage();
+  const router = useRouter();
+  
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    router.refresh(); // 强制服务器组件重新渲染
+  };
+  // ...
+}
+```
+
+---
+
+### 动态路由与内容管理
+
+#### **捕获所有路由**
+
+使用 **捕获所有区段**（`[...slug]`）实现灵活路由，处理嵌套内容层次：
+
+```typescript
+// app/notes/[...slug]/page.tsx
+export default async function Page({ params }: PageProps) {
+  const { slug } = params; // ['frontend', 'react', 'hooks']
+  const urlPath = '/notes/' + slug.join('/');
+  const basePath = buildContentPath('content', 'notes', ...slug);
+  // ...
+}
+```
+
+**优势：**
+- 单一路由处理器支持无限嵌套深度
+- 从 URL 区段自动解析路径
+- 路由与内容结构的清晰分离
+
+#### **语言回退的内容加载**
+
+具备智能语言回退的自定义内容加载器：
+
+```typescript
+// lib/content-loader.ts
+export async function loadContent(
+  basePath: string,
+  language: Language
+): Promise<{ content: string; language: string } | null> {
+  const filePaths = getFilePaths(basePath, language);
+  // 尝试顺序：index.{lang}.mdx -> {base}.{lang}.mdx -> 回退语言 -> 默认
+  return await tryLoadFile(filePaths);
+}
+```
+
+**回退策略：**
+1. 当前语言（文件夹格式：`index.{lang}.mdx`）
+2. 当前语言（文件格式：`{name}.{lang}.mdx`）
+3. 回退语言（EN → ZH_TW → ZH_CN）
+4. 默认文件（无语言后缀）
+
+---
+
+### 国际化（i18n）实现
+
+#### **客户端语言管理**
+
+**LanguageProvider** 上下文用于客户端状态：
+
+```typescript
+// lib/i18n/LanguageProvider.tsx
+export function LanguageProvider({ children }) {
+  const [language, setLanguageState] = useState<Language>(defaultLanguage);
+  
+  useEffect(() => {
+    // 1. 检查 localStorage
+    const savedLanguage = localStorage.getItem('language');
+    // 2. 检测浏览器语言
+    const browserLang = navigator.language;
+    // 3. 设置 Cookie 供服务器端访问
+    document.cookie = `language=${lang}; path=/; max-age=31536000`;
+  }, []);
+}
+```
+
+#### **服务器端语言检测**
+
+服务器组件从 Cookie 读取语言：
+
+```typescript
+// lib/i18n/server.ts
+export function getServerLanguage(): Language {
+  const cookies = cookies();
+  const lang = cookies.get('language')?.value;
+  return validateLanguage(lang) || defaultLanguage;
+}
+```
+
+#### **翻译系统**
+
+模块化翻译结构，使用每字段多语言对象：
+
+```typescript
+// lib/i18n/translations/home.ts
+export const home = {
+  welcome: {
+    [LANGUAGE.ZH_TW]: '歡迎',
+    [LANGUAGE.ZH_CN]: '欢迎',
+    [LANGUAGE.EN]: 'Welcome',
+  } as MultilangText,
+  // ...
+};
+```
+
+**优势：**
+- 类型安全的翻译键
+- 翻译与 UI 组件共置
+- 使用 `extractLanguage` 辅助函数进行运行时语言提取
+
+---
+
+### MDX/Markdown 渲染系统
+
+#### **自定义 MDX 渲染器**
+
+使用 `react-markdown` 构建具备增强功能的自定义渲染器：
+
+```typescript
+// components/mdx-renderer.tsx
+export default function MDXRenderer({ source }: MDXRendererProps) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={{
+        code: CodeBlock,      // 语法高亮
+        h1: Heading1,         // 自定义标题样式
+        // ... 自定义组件
+      }}
+    >
+      {source}
+    </ReactMarkdown>
+  );
+}
+```
+
+**功能：**
+- **语法高亮**：使用 VS Code Dark+ 主题的 Prism.js
+- **数学支持**：使用 KaTeX 处理数学表达式
+- **GFM 支持**：GitHub Flavored Markdown（表格、任务列表）
+- **自定义组件**：样式化的标题、代码块、链接
+
+#### **内容处理**
+
+增强 Markdown 功能的预处理管道：
+
+```typescript
+const processHighlight = (text: string) => {
+  // 支持 ==highlight== 语法
+  return text.replace(/==([^=]+)==/g, '<span class="highlight">$1</span>');
+};
+```
+
+---
+
+### 性能优化
+
+#### **服务器组件优化**
+
+- **零客户端 JS**：静态内容服务器端渲染，无需水合
+- **流式**：使用 React Suspense 进行渐进式渲染
+- **代码分割**：自动基于路由的代码分割
+
+#### **构建优化**
+
+```javascript
+// next.config.js
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,              // 基于 Rust 的快速最小化
+  experimental: {
+    esmExternals: true,          // ESM 包支持
+  },
+  webpack: (config, { isServer }) => {
+    // 从客户端打包中排除 Node.js 模块
+    if (!isServer) {
+      config.resolve.fallback = { fs: false };
+    }
+    return config;
+  },
+};
+```
+
+#### **图片与资源优化**
+
+- Next.js Image 组件自动优化
+- 使用 `next/font/google` 进行字体优化
+- 构建过程中的静态资源优化
+
+---
+
+### API 路由
+
+用于动态内容的 RESTful API 端点：
+
+```typescript
+// app/api/notes/route.ts
+export async function GET() {
+  const notesDirectory = path.join(process.cwd(), 'content', 'notes');
+  const files = await fs.readdir(notesDirectory);
+  // 处理并返回结构化数据
+  return NextResponse.json(notes);
+}
+```
+
+---
+
+### 类型安全与开发者体验
+
+#### **TypeScript 配置**
+
+- 启用严格类型检查
+- 路径别名（`@/`）以简化导入
+- 所有自定义工具函数的类型定义
+
+#### **组件模式**
+
+- 使用接口进行一致的属性类型化
+- 可重用的工具函数（`cn` 用于类别合并）
+- 错误边界以优雅处理错误
+
+---
+
+### 部署与 CI/CD
+
+- **Vercel 整合**：从 Git 自动部署
+- **环境变量**：安全的配置管理
+- **构建优化**：尽可能使用静态生成
+- **Edge Runtime**：针对全球性能优化
+
+---
+
+### 主要成就
+
+- **100% TypeScript**：整个代码库的完整类型安全
+- **多语言支持**：具备回退机制的无缝语言切换
+- **内容灵活性**：具备动态路由的文件式 CMS
+- **性能**：使用服务器端渲染实现快速初始加载
+- **开发者体验**：清晰的架构和可维护的代码结构
+

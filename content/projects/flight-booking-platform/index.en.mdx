@@ -1,0 +1,68 @@
+## High-Reliability Flight Booking Platform
+
+**Role:** Lead Developer for 100+ Feature Enhancements  
+**Duration:** Jul 2022 – Jun 2024  
+**Company:** Meituan (Beijing Sankuai Online Technology Co., Ltd.)  
+**Tech Stack:** React Native, Vue.js, JavaScript, TypeScript, Node.js, REST API
+
+---
+
+### Overview
+
+Led system modernization across frontend and backend integration for a mission-critical flight booking platform serving **1M+ daily users**. The platform handles flight search, booking, and payment flows across Meituan App and WeChat Mini Programs, requiring high reliability, correctness, and low latency.
+
+---
+
+### Key Achievements
+
+#### **Performance Optimization**
+- Optimized API pipelines and request strategies using **lazy loading**, **pre-requests**, and **request merging**
+- Improved **initial render speed by 16.7%** through bundle size reduction, tree-shaking, and resource preloading
+- Boosted **booking conversion rate by 3%** by reducing time-to-interactive and improving user experience
+
+#### **System Modernization**
+- Modernized legacy modules into **scalable architectures** with modular design patterns
+- Reduced **long-term maintenance cost by 30%** through code refactoring and reusable component development
+- Developed **20+ reusable business components** (buttons, tab navigation, display cards) to reduce team workload
+
+#### **Cross-Platform Consistency**
+- Partnered with platform department to unify user experience across **Meituan App** and **WeChat Mini Programs**
+- Ensured consistent behaviors and data flow across different platforms
+- Implemented platform-specific optimizations while maintaining code reusability
+
+---
+
+### Technical Challenges & Solutions
+
+#### **First Contentful Paint (FCP) Optimization**
+
+**Challenge:** Continuously reducing time-to-interactive for the booking flow under high traffic.
+
+**Solutions Implemented:**
+
+1. **Bundle Size Reduction**
+   - Implemented **tree-shaking** to eliminate unused code
+   - Used Babel plugin to transform `import _ from 'lodash'` into efficient module imports like `import throttle from 'lodash/throttle'`
+   - Replaced larger third-party libraries (e.g., **moment.js → day.js**) to minimize dependency sizes
+   - Used image compression tools (TinyPNG) to reduce initial resource load
+
+2. **Preloading Strategy**
+   - Utilized **PN file** mechanism for dynamic resource loading with listeners
+   - Issued requests early and synchronized them with main bundle load
+   - Implemented **request merging** using interceptors to avoid redundant requests
+
+3. **Rendering Optimization**
+   - Configured **FlatList** and **VirtualizedList** attributes (`initialNumToRender`, `maxToRenderPerBatch`) to optimize initial render
+   - Pre-calculated cell heights to improve list rendering efficiency
+   - Used **page preloading** and **RAM bundle mechanism** to preload next page's bundle and reuse short-lived engine instances
+
+---
+
+### Impact
+
+- **100+ features** developed and launched over two years
+- **16.7% improvement** in page load times
+- **3% increase** in booking conversion rate
+- **30% reduction** in future maintenance time
+- **20+ reusable components** reducing team development workload
+

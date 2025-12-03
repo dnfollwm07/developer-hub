@@ -17,7 +17,7 @@ export default async function PersonalPage() {
   }
   
   // 如果文件不存在，显示子节点列表
-  const children = getChildrenByPath('/personal')
+  const children = getChildrenByPath('/personal', language)
   const title = getTitleByPath('/personal', language)
   
   if (children.length > 0) {

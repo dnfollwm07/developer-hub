@@ -1,10 +1,10 @@
 'use client';
 
 import { useLanguage } from './LanguageProvider';
-import { translations } from './translations';
+import { getTranslations } from './translations/index';
 
 export function useTranslation() {
   const { language } = useLanguage();
-  return translations[language];
+  return getTranslations(language);
 }
 

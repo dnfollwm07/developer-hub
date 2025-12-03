@@ -17,7 +17,7 @@ export default async function NotesPage() {
   }
   
   // 如果文件不存在，显示子节点列表
-  const children = getChildrenByPath('/notes')
+  const children = getChildrenByPath('/notes', language)
   const title = getTitleByPath('/notes', language)
   
   if (children.length > 0) {

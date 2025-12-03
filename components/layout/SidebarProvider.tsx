@@ -5,8 +5,8 @@ import React, { createContext, useContext, useState } from 'react';
 interface SidebarContextType {
   isCollapsed: boolean;
   toggleSidebar: () => void;
-  expandedItems: string[];
-  toggleItem: (title: string) => void;
+  expandedItems: string[]; // 使用 href 作为标识
+  toggleItem: (href: string) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
@@ -19,11 +19,11 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
     setIsCollapsed(!isCollapsed);
   };
 
-  const toggleItem = (title: string) => {
+  const toggleItem = (href: string) => {
     setExpandedItems((prev) =>
-      prev.includes(title)
-        ? prev.filter((item) => item !== title)
-        : [...prev, title]
+      prev.includes(href)
+        ? prev.filter((item) => item !== href)
+        : [...prev, href]
     );
   };
 
