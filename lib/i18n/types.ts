@@ -22,6 +22,13 @@ export interface Translations {
     aboutMe: string;
     projects: string;
     notes: string;
+    editor: string;
+    editorPlaceholder: string;
+    preview: string;
+    editorTitle: string;
+    copyMarkdown: string;
+    copied: string;
+    downloadMarkdown: string;
   };
   home: {
     welcome: string;

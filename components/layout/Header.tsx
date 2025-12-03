@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, User, FolderKanban, BookOpen } from 'lucide-react';
+import { Home, User, FolderKanban, BookOpen, FileEdit } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { LanguageSwitcher } from '@/components/language/LanguageSwitcher';
 
@@ -16,6 +16,7 @@ export function Header() {
     { href: '/personal', label: t.nav.aboutMe, icon: User },
     { href: '/projects', label: t.nav.projects, icon: FolderKanban },
     { href: '/notes', label: t.nav.notes, icon: BookOpen },
+    { href: '/editor', label: t.nav.editor, icon: FileEdit },
   ];
 
   return (
