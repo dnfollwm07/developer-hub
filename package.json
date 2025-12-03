@@ -39,7 +39,7 @@
     "remark-html": "^15.0.2",
     "remark-mark": "^0.0.0",
     "remark-math": "^6.0.0",
-    "tailwind-merge": "^3.2.0",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

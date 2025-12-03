@@ -3,15 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, FolderKanban, BookOpen } from 'lucide-react';
+import { Home, User, FolderKanban, BookOpen } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+import { LanguageSwitcher } from '@/components/language/LanguageSwitcher';
 
 export function Header() {
   const pathname = usePathname();
+  const t = useTranslation();
 
   const navItems = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/projects', label: 'Projects', icon: FolderKanban },
-    { href: '/notes', label: 'Notes', icon: BookOpen },
+    { href: '/', label: t.nav.home, icon: Home },
+    { href: '/personal', label: t.nav.aboutMe, icon: User },
+    { href: '/projects', label: t.nav.projects, icon: FolderKanban },
+    { href: '/notes', label: t.nav.notes, icon: BookOpen },
   ];
 
   return (
