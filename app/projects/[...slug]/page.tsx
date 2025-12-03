@@ -62,7 +62,6 @@ export default async function Page({ params }: PageProps) {
     return <div>{t.common.notFound}</div>
   } catch (error) {
     console.error('[Projects Page] Error:', error);
-    const t = getServerTranslations();
     return <div>Error loading page: {error instanceof Error ? error.message : String(error)}</div>
   }
 } 
