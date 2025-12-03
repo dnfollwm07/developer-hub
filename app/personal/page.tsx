@@ -9,6 +9,6 @@ export default async function PersonalPage() {
     const source = await fs.readFile(filePath, 'utf8')
     return <MDXPage source={source} />
   } catch {
-    return <div>Page not found</div>
+    return <div>Please find the note you are looking for in the sidebar.</div>
   }
 } 

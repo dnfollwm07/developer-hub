@@ -10,7 +10,7 @@ export function Header() {
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
-    { href: '/personal', label: 'About', icon: User },
+    // { href: '/personal', label: 'About', icon: User },
     { href: '/projects', label: 'Projects', icon: FolderKanban },
     { href: '/notes', label: 'Notes', icon: BookOpen },
   ];
