@@ -2,6 +2,7 @@
 # 我的筆記網站
 
 This is a personal website built with Next.js and Tailwind CSS to showcase personal profile, project experience, and technical notes.
+
 這是一個使用 Next.js 和 Tailwind CSS 建立的個人網站，用於展示個人介紹、項目經驗和技術筆記。
 
 ## Features
