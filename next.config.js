@@ -6,6 +6,8 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
   },
+  // Ensure content folder is included in deployment
+  output: 'standalone',
   webpack: (config, { isServer }) => {
     // Ensure tailwind-merge is properly handled
     if (!isServer) {

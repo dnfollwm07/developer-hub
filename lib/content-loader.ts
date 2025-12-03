@@ -52,12 +52,41 @@ function getFilePaths(basePath: string, language: Language): string[] {
  */
 async function tryLoadFile(filePaths: string[]): Promise<{ content: string; language: string } | null> {
   const errors: string[] = [];
+  
+  // 在 Vercel 环境中，先检查文件系统是否可访问
+  if (process.env.VERCEL_ENV) {
+    try {
+      const cwd = process.cwd();
+      const contentDir = path.join(cwd, 'content');
+      await fs.access(contentDir);
+      console.log('[tryLoadFile] Content directory accessible:', {
+        cwd,
+        contentDir,
+        exists: true,
+      });
+    } catch (error) {
+      console.error('[tryLoadFile] Content directory not accessible:', {
+        cwd: process.cwd(),
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  
   for (const filePath of filePaths) {
     try {
       const content = await fs.readFile(filePath, 'utf8');
       // 从文件路径提取语言标识
       const match = filePath.match(/\.(zh-TW|zh-CN|en)\.mdx$/);
       const detectedLanguage = match ? (match[1] as Language) : 'default';
+      
+      if (process.env.VERCEL_ENV) {
+        console.log('[tryLoadFile] Successfully loaded file:', {
+          filePath,
+          language: detectedLanguage,
+          contentLength: content.length,
+        });
+      }
+      
       return { content, language: detectedLanguage };
     } catch (error) {
       // 记录错误信息
@@ -68,7 +97,13 @@ async function tryLoadFile(filePaths: string[]): Promise<{ content: string; lang
   }
   
   // 如果所有文件都加载失败，在开发环境中打印所有尝试的路径
-  if (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV) {
+  // 但排除静态资源文件的错误日志
+  const isStaticResource = filePaths.some(path => {
+    const staticExtensions = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.json', '.xml', '.txt', '.css', '.js'];
+    return staticExtensions.some(ext => path.toLowerCase().includes(ext));
+  });
+  
+  if (!isStaticResource && (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV)) {
     console.error('Failed to load content from all paths:', {
       attemptedPaths: filePaths,
       errors: errors.slice(0, 5), // 只显示前5个错误
@@ -89,6 +124,12 @@ export async function loadContent(
   basePath: string,
   language: Language
 ): Promise<{ content: string; language: string } | null> {
+  // 早期检查：排除明显的静态资源路径
+  const staticExtensions = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.json', '.xml', '.txt', '.css', '.js'];
+  if (staticExtensions.some(ext => basePath.toLowerCase().endsWith(ext))) {
+    return null;
+  }
+  
   const filePaths = getFilePaths(basePath, language);
   return await tryLoadFile(filePaths);
 }
