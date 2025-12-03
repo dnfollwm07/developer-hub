@@ -51,6 +51,7 @@ function getFilePaths(basePath: string, language: Language): string[] {
  * 尝试加载文件，按优先级顺序
  */
 async function tryLoadFile(filePaths: string[]): Promise<{ content: string; language: string } | null> {
+  const errors: string[] = [];
   for (const filePath of filePaths) {
     try {
       const content = await fs.readFile(filePath, 'utf8');
@@ -59,14 +60,22 @@ async function tryLoadFile(filePaths: string[]): Promise<{ content: string; lang
       const detectedLanguage = match ? (match[1] as Language) : 'default';
       return { content, language: detectedLanguage };
     } catch (error) {
-      // 继续尝试下一个文件
-      // 在开发环境中可以打印错误以便调试
-      if (process.env.NODE_ENV === 'development') {
-        console.debug(`Failed to load file: ${filePath}`, error);
-      }
+      // 记录错误信息
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      errors.push(`${filePath}: ${errorMsg}`);
       continue;
     }
   }
+  
+  // 如果所有文件都加载失败，在开发环境中打印所有尝试的路径
+  if (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV) {
+    console.error('Failed to load content from all paths:', {
+      attemptedPaths: filePaths,
+      errors: errors.slice(0, 5), // 只显示前5个错误
+      cwd: process.cwd(),
+    });
+  }
+  
   return null;
 }
 
@@ -127,8 +136,19 @@ export async function contentExists(basePath: string): Promise<boolean> {
  */
 export function buildContentPath(...segments: string[]): string {
   // 在 Vercel 上，process.cwd() 在运行时返回项目根目录
-  // 直接使用 process.cwd() 应该可以工作
-  // 如果不行，可能需要使用 path.resolve 来确保绝对路径
-  return path.join(process.cwd(), ...segments);
+  // 使用 path.resolve 确保绝对路径
+  const basePath = path.resolve(process.cwd(), ...segments);
+  
+  // 在 Vercel 环境中记录路径信息以便调试
+  if (process.env.VERCEL_ENV) {
+    console.log('[buildContentPath]', {
+      segments,
+      basePath,
+      cwd: process.cwd(),
+      vercelEnv: process.env.VERCEL_ENV,
+    });
+  }
+  
+  return basePath;
 }
 

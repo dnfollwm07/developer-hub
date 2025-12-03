@@ -32,14 +32,16 @@ export default async function Page({ params }: PageProps) {
     return <IndexPage title={title} items={children} />
   }
   
-  // 调试信息：在开发环境中显示路径信息
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('Content not found:', {
+  // 调试信息：在开发环境或 Vercel 中显示路径信息
+  if (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV) {
+    console.error('Content not found:', {
       urlPath,
       basePath,
       slug,
       language,
       cwd: process.cwd(),
+      nodeEnv: process.env.NODE_ENV,
+      vercelEnv: process.env.VERCEL_ENV,
     });
   }
   
