@@ -3,9 +3,11 @@ import path from 'path'
 import MDXPage from '@/components/mdx-page'
 import IndexPage from '@/components/IndexPage'
 import { getChildrenByPath, getTitleByPath } from '@/lib/sidebar-utils'
+import { getServerTranslations } from '@/lib/i18n/server'
 
 export default async function PersonalPage() {
   const filePath = path.join(process.cwd(), 'content', 'personal', 'index.mdx')
+  const t = getServerTranslations();
   
   try {
     const source = await fs.readFile(filePath, 'utf8')
@@ -19,6 +21,6 @@ export default async function PersonalPage() {
       return <IndexPage title={title} items={children} />
     }
     
-    return <div>Please find the note you are looking for in the sidebar.</div>
+    return <div>{t.common.notFound}</div>
   }
 } 

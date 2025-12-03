@@ -1,0 +1,85 @@
+import type { Language } from './types';
+
+// Sidebar 标题的翻译映射
+export const sidebarTranslations: Record<Language, Record<string, string>> = {
+  'zh-TW': {
+    'About Me': '關於我',
+    'My Projects': '我的專案',
+    'My Notes': '我的筆記',
+    'Education': '教育背景',
+    'Work Experience': '工作經驗',
+    'Meituan': '美團',
+    'My Web': '我的網站',
+    'Tailwind CSS': 'Tailwind CSS',
+    'Nextjs': 'Next.js',
+    'Operating System': '作業系統',
+    'Network': '網路',
+    'Data Structure': '資料結構',
+    'Frontend': '前端',
+    'React': 'React',
+    'Electron': 'Electron',
+    'CSS': 'CSS',
+    'HTML': 'HTML',
+    'Request': '請求',
+    'Android': 'Android',
+    'Backend': '後端',
+    'Other Techniques': '其他技術',
+    'Tools': '工具',
+  },
+  'zh-CN': {
+    'About Me': '关于我',
+    'My Projects': '我的项目',
+    'My Notes': '我的笔记',
+    'Education': '教育背景',
+    'Work Experience': '工作经验',
+    'Meituan': '美团',
+    'My Web': '我的网站',
+    'Tailwind CSS': 'Tailwind CSS',
+    'Nextjs': 'Next.js',
+    'Operating System': '操作系统',
+    'Network': '网络',
+    'Data Structure': '数据结构',
+    'Frontend': '前端',
+    'React': 'React',
+    'Electron': 'Electron',
+    'CSS': 'CSS',
+    'HTML': 'HTML',
+    'Request': '请求',
+    'Android': 'Android',
+    'Backend': '后端',
+    'Other Techniques': '其他技术',
+    'Tools': '工具',
+  },
+  'en': {
+    'About Me': 'About Me',
+    'My Projects': 'My Projects',
+    'My Notes': 'My Notes',
+    'Education': 'Education',
+    'Work Experience': 'Work Experience',
+    'Meituan': 'Meituan',
+    'My Web': 'My Web',
+    'Tailwind CSS': 'Tailwind CSS',
+    'Nextjs': 'Next.js',
+    'Operating System': 'Operating System',
+    'Network': 'Network',
+    'Data Structure': 'Data Structure',
+    'Frontend': 'Frontend',
+    'React': 'React',
+    'Electron': 'Electron',
+    'CSS': 'CSS',
+    'HTML': 'HTML',
+    'Request': 'Request',
+    'Android': 'Android',
+    'Backend': 'Backend',
+    'Other Techniques': 'Other Techniques',
+    'Tools': 'Tools',
+  },
+};
+
+/**
+ * 根据语言获取 Sidebar 项的翻译标题
+ */
+export function getTranslatedSidebarTitle(title: string, language: Language): string {
+  return sidebarTranslations[language][title] || title;
+}
+

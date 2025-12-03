@@ -1,7 +1,9 @@
 import IndexPage from '@/components/IndexPage'
 import { getChildrenByPath, getTitleByPath } from '@/lib/sidebar-utils'
+import { getServerTranslations } from '@/lib/i18n/server'
 
 export default async function ProjectsPage() {
+  const t = getServerTranslations();
   const children = getChildrenByPath('/projects')
   const title = getTitleByPath('/projects')
   
@@ -9,6 +11,6 @@ export default async function ProjectsPage() {
     return <IndexPage title={title} items={children} />
   }
   
-  return <div>No projects available.</div>
+  return <div>{t.common.noItems}</div>
 }
 

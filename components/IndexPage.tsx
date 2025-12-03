@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { ChevronRight, FileText, Folder } from 'lucide-react';
 import type { SidebarItem } from '@/config/sidebar';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import { getTranslatedSidebarTitle } from '@/lib/i18n/sidebar-translations';
 
 interface IndexPageProps {
   title: string;
@@ -10,10 +13,14 @@ interface IndexPageProps {
 }
 
 export default function IndexPage({ title, items }: IndexPageProps) {
+  const t = useTranslation();
+  const { language } = useLanguage();
+  
   const renderItems = (items: SidebarItem[], level = 0) => {
     return items.map((item) => {
       const hasChildren = item.children && item.children.length > 0;
       const isLeaf = !hasChildren;
+      const translatedTitle = getTranslatedSidebarTitle(item.title, language);
 
       return (
         <div key={item.href} className={level > 0 ? 'ml-6 mt-2' : ''}>
@@ -48,11 +55,11 @@ export default function IndexPage({ title, items }: IndexPageProps) {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                {item.title}
+                {translatedTitle}
               </h3>
               {hasChildren && (
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  {item.children?.length} {item.children?.length === 1 ? 'item' : 'items'}
+                  {item.children?.length} {item.children?.length === 1 ? t.common.item : t.common.items}
                 </p>
               )}
             </div>
@@ -70,7 +77,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
                 >
                   <span className="flex items-center gap-2">
                     <FileText className="w-4 h-4" />
-                    {child.title}
+                    {getTranslatedSidebarTitle(child.title, language)}
                   </span>
                 </Link>
               ))}
@@ -79,7 +86,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
                   href={item.href}
                   className="block ml-14 p-2 text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
                 >
-                  + {item.children.length - 5} more items...
+                  + {item.children.length - 5} {t.common.moreItems}
                 </Link>
               )}
             </div>
@@ -94,7 +101,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">{title}</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          Browse through the available content below
+          {t.indexPage.browseAvailable}
         </p>
       </div>
 
@@ -103,7 +110,7 @@ export default function IndexPage({ title, items }: IndexPageProps) {
           renderItems(items)
         ) : (
           <div className="text-center py-12">
-            <p className="text-slate-500 dark:text-slate-400">No items available</p>
+            <p className="text-slate-500 dark:text-slate-400">{t.common.noItems}</p>
           </div>
         )}
       </div>

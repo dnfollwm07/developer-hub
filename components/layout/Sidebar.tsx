@@ -8,6 +8,9 @@ import { useSidebar } from './SidebarProvider';
 import type { SidebarItem } from '@/config/sidebar';
 import { sidebarItems } from '@/config/sidebar';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import { getTranslatedSidebarTitle } from '@/lib/i18n/sidebar-translations';
 
 interface SidebarItemProps {
   item: SidebarItem;
@@ -17,9 +20,11 @@ interface SidebarItemProps {
 const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) => {
   const { isCollapsed, expandedItems, toggleItem } = useSidebar();
   const pathname = usePathname();
+  const { language } = useLanguage();
   const hasChildren = item.children && item.children.length > 0;
   const isExpanded = expandedItems.includes(item.title);
   const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
+  const translatedTitle = getTranslatedSidebarTitle(item.title, language);
 
   return (
     <div className="mb-1">
@@ -54,9 +59,9 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
             }
           `}
-          title={isCollapsed ? item.title : undefined}
+          title={isCollapsed ? translatedTitle : undefined}
         >
-          {!isCollapsed && item.title}
+          {!isCollapsed && translatedTitle}
           {isCollapsed && <span className="text-xs">•</span>}
         </Link>
       </div>
@@ -74,6 +79,7 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({ item, level = 0 }) =
 
 export function Sidebar() {
   const { isCollapsed, toggleSidebar } = useSidebar();
+  const t = useTranslation();
 
   return (
     <aside
@@ -90,7 +96,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
           {!isCollapsed && (
             <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              Navigation
+              {t.sidebar.navigation}
             </h2>
           )}
           <button

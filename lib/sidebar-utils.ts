@@ -1,5 +1,7 @@
 import type { SidebarItem } from '@/config/sidebar';
 import { sidebarItems } from '@/config/sidebar';
+import type { Language } from './i18n/types';
+import { getTranslatedSidebarTitle } from './i18n/sidebar-translations';
 
 /**
  * 递归查找 sidebar 中匹配指定路径的项
@@ -56,9 +58,15 @@ export function getChildrenByPath(path: string): SidebarItem[] {
 /**
  * 根据路径获取标题
  */
-export function getTitleByPath(path: string): string {
+export function getTitleByPath(path: string, language?: Language): string {
   const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
   const item = findSidebarItemByPath(sidebarItems, normalizedPath);
-  return item?.title || 'Content';
+  if (!item) return 'Content';
+  
+  if (language) {
+    return getTranslatedSidebarTitle(item.title, language);
+  }
+  
+  return item.title;
 }
 

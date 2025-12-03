@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight, Code, BookOpen, Briefcase, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function Home() {
+  const t = useTranslation();
+  
   return (
       <div className="min-h-screen">
         {/* Hero Section */}
@@ -12,23 +17,23 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 mb-8">
                 <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Welcome to My Developer Hub
+                  {t.home.welcome}
                 </span>
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
-                <span className="block">Hello, I&apos;m</span>
+                <span className="block">{t.home.hello}</span>
                 <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Jing-Ning Su
                 </span>
               </h1>
               
               <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-3xl mx-auto">
-                You can call me <span className="font-semibold text-indigo-600 dark:text-indigo-400">Michelle</span>
+                {t.home.callMe} <span className="font-semibold text-indigo-600 dark:text-indigo-400">Michelle</span>
               </p>
               
               <p className="text-lg text-slate-500 dark:text-slate-500 mb-12 max-w-2xl mx-auto">
-                A passionate developer sharing my journey through code, projects, and technical insights.
+                {t.home.description}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -36,14 +41,14 @@ export default function Home() {
                   href="/personal"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/50 transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  About Me
+                  {t.home.aboutMeButton}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   href="/notes"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-semibold rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300"
                 >
-                  View Notes
+                  {t.home.viewNotesButton}
                   <BookOpen className="w-5 h-5" />
                 </Link>
               </div>
@@ -56,10 +61,10 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-                Explore My Work
+                {t.home.exploreWork}
               </h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                Discover my projects, technical notes, and professional journey
+                {t.home.exploreDescription}
               </p>
             </div>
             
@@ -73,9 +78,9 @@ export default function Home() {
                   <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Briefcase className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">About Me</h3>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.home.aboutMeCard.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Learn about my education, work experience, and professional background
+                    {t.home.aboutMeCard.description}
                   </p>
                 </div>
               </Link>
@@ -89,9 +94,9 @@ export default function Home() {
                   <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Code className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">My Projects</h3>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.home.projectsCard.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Explore my portfolio of projects and technical implementations
+                    {t.home.projectsCard.description}
                   </p>
                 </div>
               </Link>
@@ -105,9 +110,9 @@ export default function Home() {
                   <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <BookOpen className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Technical Notes</h3>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.home.notesCard.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Browse my collection of technical notes and learning resources
+                    {t.home.notesCard.description}
                   </p>
                 </div>
               </Link>

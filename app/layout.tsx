@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SidebarProvider } from '@/components/layout/SidebarProvider';
 import { ContentWrapper } from '@/components/layout/ContentWrapper';
+import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,15 +22,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
-        <SidebarProvider>
-          <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900">
-            <Header />
-            <div className="flex flex-1 pt-16">
-              <Sidebar />
-              <ContentWrapper>{children}</ContentWrapper>
+        <LanguageProvider>
+          <SidebarProvider>
+            <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900">
+              <Header />
+              <div className="flex flex-1 pt-16">
+                <Sidebar />
+                <ContentWrapper>{children}</ContentWrapper>
+              </div>
             </div>
-          </div>
-        </SidebarProvider>
+          </SidebarProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
