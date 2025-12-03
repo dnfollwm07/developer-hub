@@ -23,8 +23,8 @@
 1. 克隆項目
 
 ```bash
-git clone https://github.com/yourusername/my-note-web.git
-cd my-note-web
+git clone https://github.com/dnfollwm07/developer-hub.git
+cd developer-hub
 ```
 
 2. 安裝依賴
@@ -70,7 +70,3 @@ tags: ["標籤1", "標籤2"]
 2. 在 Vercel 中導入項目
 3. 配置環境變量（如果需要）
 4. 點擊部署
-
-## 許可證
-
-MIT 
