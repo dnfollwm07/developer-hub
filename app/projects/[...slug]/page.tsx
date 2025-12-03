@@ -11,26 +11,58 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  const { slug } = params
-  const language = getServerLanguage();
-  const t = getServerTranslations();
-  const urlPath = '/projects/' + slug.join('/')
-  const basePath = buildContentPath('content', 'projects', ...slug);
-  
-  // 尝试加载多语言内容
-  const result = await loadContent(basePath, language);
-  
-  if (result) {
-    return <MDXRenderer source={result.content} />
+  try {
+    const { slug } = params
+    const language = getServerLanguage();
+    const t = getServerTranslations();
+    const urlPath = '/projects/' + slug.join('/')
+    const basePath = buildContentPath('content', 'projects', ...slug);
+    
+    console.log('[Projects Page] Loading content:', {
+      urlPath,
+      basePath,
+      slug,
+      language,
+      cwd: process.cwd(),
+    });
+    
+    // 尝试加载多语言内容
+    const result = await loadContent(basePath, language);
+    
+    if (result) {
+      console.log('[Projects Page] Content loaded successfully:', {
+        language: result.language,
+        contentLength: result.content.length,
+      });
+      return <MDXRenderer source={result.content} />
+    }
+    
+    // 如果文件不存在，检查是否有子节点
+    const children = getChildrenByPath(urlPath, language)
+    const title = getTitleByPath(urlPath, language)
+    
+    console.log('[Projects Page] Content not found, checking children:', {
+      urlPath,
+      childrenCount: children.length,
+      title,
+    });
+    
+    if (children.length > 0) {
+      return <IndexPage title={title} items={children} />
+    }
+    
+    console.error('[Projects Page] Content not found and no children:', {
+      urlPath,
+      basePath,
+      slug,
+      language,
+      cwd: process.cwd(),
+    });
+    
+    return <div>{t.common.notFound}</div>
+  } catch (error) {
+    console.error('[Projects Page] Error:', error);
+    const t = getServerTranslations();
+    return <div>Error loading page: {error instanceof Error ? error.message : String(error)}</div>
   }
-  
-  // 如果文件不存在，检查是否有子节点
-  const children = getChildrenByPath(urlPath, language)
-  const title = getTitleByPath(urlPath, language)
-  
-  if (children.length > 0) {
-    return <IndexPage title={title} items={children} />
-  }
-  
-  return <div>{t.common.notFound}</div>
 } 
