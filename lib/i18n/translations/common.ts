@@ -7,9 +7,9 @@ export const common = {
     [LANGUAGE.EN]: 'Loading content...',
   } as MultilangText,
   notFound: {
-    [LANGUAGE.ZH_TW]: '請在側邊欄找到您要查找的筆記。',
-    [LANGUAGE.ZH_CN]: '请在侧边栏找到您要查找的笔记。',
-    [LANGUAGE.EN]: 'Please find the note you are looking for in the sidebar.',
+    [LANGUAGE.ZH_TW]: '找不到此頁面',
+    [LANGUAGE.ZH_CN]: '找不到此页面',
+    [LANGUAGE.EN]: 'Content not found',
   } as MultilangText,
   browseContent: {
     [LANGUAGE.ZH_TW]: '瀏覽以下可用內容',
