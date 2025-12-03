@@ -41,7 +41,7 @@ export const MarkdownEditor = () => {
       {/* 標題和操作按鈕 */}
       <div className="flex items-center justify-between mb-3 pb-2">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-          {t.nav.editorTitle || 'Markdown 預覽編輯器'}
+          {t.nav.editorTitle || 'Markdown Preview Editor'}
         </h1>
         <div className="flex gap-2">
           <button
@@ -51,17 +51,17 @@ export const MarkdownEditor = () => {
                      disabled:bg-slate-400 disabled:cursor-not-allowed
                      text-white rounded-lg transition-colors duration-200
                      text-sm font-medium"
-            title={t.nav.copyMarkdown || '複製 Markdown'}
+            title={t.nav.copyMarkdown || 'Copy Markdown'}
           >
             {copied ? (
               <>
                 <Check className="w-4 h-4" />
-                <span>{t.nav.copied || '已複製'}</span>
+                <span>{t.nav.copied || 'Copied'}</span>
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                <span>{t.nav.copyMarkdown || '複製'}</span>
+                <span>{t.nav.copyMarkdown || 'Copy'}</span>
               </>
             )}
           </button>
@@ -72,10 +72,10 @@ export const MarkdownEditor = () => {
                      disabled:bg-slate-400 disabled:cursor-not-allowed
                      text-white rounded-lg transition-colors duration-200
                      text-sm font-medium"
-            title={t.nav.downloadMarkdown || '下載為 .mdx 文件'}
+            title={t.nav.downloadMarkdown || 'Download as .mdx file'}
           >
             <Download className="w-4 h-4" />
-            <span>{t.nav.downloadMarkdown || '下載'}</span>
+            <span>{t.nav.downloadMarkdown || 'Download'}</span>
           </button>
         </div>
       </div>
@@ -85,7 +85,7 @@ export const MarkdownEditor = () => {
         {/* 編輯區域 */}
         <div className="flex flex-col h-full">
           <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {t.nav.editor || '編輯區'}
+            {t.nav.editor || 'Editor'}
           </h3>
           <textarea
             value={markdown}
@@ -95,14 +95,14 @@ export const MarkdownEditor = () => {
                        text-base leading-relaxed resize-none
                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
                        font-mono"
-            placeholder={t.nav.editorPlaceholder || "在這裡輸入 Markdown 內容..."}
+            placeholder={t.nav.editorPlaceholder || "Enter Markdown content here..."}
           />
         </div>
 
         {/* 预览区域 */}
         <div className="flex flex-col h-full overflow-auto">
           <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {t.nav.preview || '預覽區'}
+            {t.nav.preview || 'Preview'}
           </h3>
           <div className="flex-1 p-4 border border-slate-300 dark:border-slate-700 rounded-lg 
                          bg-white dark:bg-slate-800 overflow-auto">
