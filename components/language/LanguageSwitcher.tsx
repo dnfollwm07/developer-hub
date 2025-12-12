@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { LANGUAGE, languageNames } from '@/lib/i18n/constants';
+import { LANGUAGE, languageNames, languageButtonText } from '@/lib/i18n/constants';
 import type { Language } from '@/lib/i18n/types';
 import { cn } from '@/lib/utils';
 
@@ -48,7 +48,7 @@ export function LanguageSwitcher() {
         aria-label="Select language"
       >
         <Globe className="w-4 h-4" />
-        <span className="hidden sm:inline">{languageNames[language]}</span>
+        <span className="hidden sm:inline">{languageButtonText[language]}</span>
       </button>
 
       {isOpen && (

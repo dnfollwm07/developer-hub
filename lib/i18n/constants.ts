@@ -22,6 +22,15 @@ export const languageNames: Record<LANGUAGE, string> = {
 };
 
 /**
+ * 语言切换按钮文本（固定显示，不随语言变化）
+ */
+export const languageButtonText: Record<LANGUAGE, string> = {
+  [LANGUAGE.ZH_TW]: 'Language',
+  [LANGUAGE.ZH_CN]: 'Language',
+  [LANGUAGE.EN]: '语言',
+};
+
+/**
  * 默认语言
  */
 export const defaultLanguage: Language = LANGUAGE.EN;
