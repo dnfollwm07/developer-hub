@@ -27,7 +27,7 @@ export const languageNames: Record<LANGUAGE, string> = {
 export const languageButtonText: Record<LANGUAGE, string> = {
   [LANGUAGE.ZH_TW]: 'Language',
   [LANGUAGE.ZH_CN]: 'Language',
-  [LANGUAGE.EN]: '语言',
+  [LANGUAGE.EN]: '語言',
 };
 
 /**
